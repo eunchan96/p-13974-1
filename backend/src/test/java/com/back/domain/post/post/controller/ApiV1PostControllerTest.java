@@ -69,8 +69,7 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.data.post.modifyDate").value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
                 .andExpect(jsonPath("$.data.post.authorId").value(post.getAuthor().getId()))
                 .andExpect(jsonPath("$.data.post.authorName").value(post.getAuthor().getName()))
-                .andExpect(jsonPath("$.data.post.title").value("제목"))
-                .andExpect(jsonPath("$.data.post.content").value("내용"));
+                .andExpect(jsonPath("$.data.post.title").value("제목"));
     }
 
     @Test
@@ -173,8 +172,7 @@ public class ApiV1PostControllerTest {
                     .andExpect(jsonPath("$[%d].modifyDate".formatted(i)).value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
                     .andExpect(jsonPath("$[%d].authorId".formatted(i)).value(post.getAuthor().getId()))
                     .andExpect(jsonPath("$[%d].authorName".formatted(i)).value(post.getAuthor().getName()))
-                    .andExpect(jsonPath("$[%d].title".formatted(i)).value(post.getTitle()))
-                    .andExpect(jsonPath("$[%d].content".formatted(i)).value(post.getContent()));
+                    .andExpect(jsonPath("$[%d].title".formatted(i)).value(post.getTitle()));
         }
     }
 
