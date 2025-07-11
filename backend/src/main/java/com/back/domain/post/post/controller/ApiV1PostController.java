@@ -2,6 +2,7 @@ package com.back.domain.post.post.controller;
 
 import com.back.domain.member.member.entity.Member;
 import com.back.domain.post.post.dto.PostDto;
+import com.back.domain.post.post.dto.PostWithContentDto;
 import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
 import com.back.global.rq.Rq;
@@ -41,9 +42,9 @@ public class ApiV1PostController {
     @GetMapping("/{id}")
     @Transactional(readOnly = true)
     @Operation(summary = "단건 조회")
-    public PostDto getItem(@PathVariable int id) {
+    public PostWithContentDto getItem(@PathVariable int id) {
         Post post = postService.findById(id).get();
-        return new PostDto(post);
+        return new PostWithContentDto(post);
     }
 
     @DeleteMapping("/{id}")
