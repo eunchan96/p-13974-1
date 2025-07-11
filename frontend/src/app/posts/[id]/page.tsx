@@ -20,7 +20,10 @@ function usePost(id: number) {
   const deletePost = (onSuccess: () => void) => {
     apiFetch(`/api/v1/posts/${id}`, {
       method: "DELETE",
-    }).then(onSuccess);
+    }).then(onSuccess)
+    .catch((error) => {
+      alert(`${error.resultCode} : ${error.msg}`);
+    });
   };
 
   return { id, post, deletePost };
@@ -45,6 +48,9 @@ function usePostComments(postId: number) {
       setPostComments(postComments.filter((comment) => comment.id !== commentId));
 
       onSuccess(data);
+    })
+    .catch((error) => {
+      alert(`${error.resultCode} : ${error.msg}`);
     });
   }
 
@@ -57,6 +63,9 @@ function usePostComments(postId: number) {
       setPostComments([...postComments, data.data]);
 
       onSuccess(data);
+    })
+    .catch((error) => {
+      alert(`${error.resultCode} : ${error.msg}`);
     });
   }
 
@@ -69,6 +78,9 @@ function usePostComments(postId: number) {
       setPostComments(postComments.map((comment) => comment.id === commentId ? { ...comment, content } : comment));
 
       onSuccess(data);
+    })
+    .catch((error) => {
+      alert(`${error.resultCode} : ${error.msg}`);
     });
   }
 

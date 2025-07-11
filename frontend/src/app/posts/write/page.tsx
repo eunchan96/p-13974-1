@@ -52,6 +52,9 @@ export default function Page() {
         .then((data) => {
             alert(data.msg);
             router.replace(`/posts/${data.data.post.id}`);
+        })
+        .catch((error) => {
+            alert(`${error.resultCode} : ${error.msg}`);
         });
     };
 

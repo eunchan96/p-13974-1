@@ -65,6 +65,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         }).then((data) => {
             alert(data.msg);
             router.replace(`/posts/${id}`);
+        })
+        .catch((error) => {
+            alert(`${error.resultCode} : ${error.msg}`);
         });
     };
 
