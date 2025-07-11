@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 
-type PostWithContentDto = components["schemas"]["PostDto"];
+type PostWithContentDto = components["schemas"]["PostWithContentDto"];
 type PostCommentDto = components["schemas"]["PostCommentDto"];
 
 function usePost(id: number) {
