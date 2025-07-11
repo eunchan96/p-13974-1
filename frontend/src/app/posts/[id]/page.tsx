@@ -1,10 +1,13 @@
 "use client";
 
 import { apiFetch } from "@/lib/backend/client";
-import type { PostCommentDto, PostWithContentDto } from "@/type/post";
+import type { components } from "@/lib/backend/apiV1/schema";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
+
+type PostWithContentDto = components["schemas"]["PostDto"];
+type PostCommentDto = components["schemas"]["PostCommentDto"];
 
 function usePost(id: number) {
   const [post, setPost] = useState<PostWithContentDto | null>(null);
