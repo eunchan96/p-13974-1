@@ -14,5 +14,17 @@
   "htmlWhitespaceSensitivity": "css",
   "vueIndentScriptAndStyle": false,
   "singleAttributePerLine": false,
-  "objectWrap": "preserve"
+  "objectWrap": "preserve",
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "^next-(.*)$",
+    "^next/(.*)$",
+    "^@/lib/backend/client",
+    "^@/lib/(.*)$",
+    "^@/components/ui/(.*)$",
+    "^lucide-react$",
+    "^[./]"
+  ],
+  "importOrderSeparation": false,
+  "importOrderSortSpecifiers": true
 }

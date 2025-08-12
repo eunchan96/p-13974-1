@@ -1,7 +1,7 @@
 "use client";
 
-import { apiFetch } from "@/lib/backend/client";
 import { useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/backend/client";
 
 export default function Page() {
   const router = useRouter();
