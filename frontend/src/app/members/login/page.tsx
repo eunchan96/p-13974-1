@@ -11,8 +11,12 @@ export default function Page() {
 
     const form = e.target as HTMLFormElement;
 
-    const usernameInput = form.elements.namedItem("username") as HTMLInputElement;
-    const passwordInput = form.elements.namedItem("password") as HTMLInputElement;
+    const usernameInput = form.elements.namedItem(
+      "username",
+    ) as HTMLInputElement;
+    const passwordInput = form.elements.namedItem(
+      "password",
+    ) as HTMLInputElement;
 
     usernameInput.value = usernameInput.value.trim();
 
