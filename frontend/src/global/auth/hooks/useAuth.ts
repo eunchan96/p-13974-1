@@ -1,0 +1,36 @@
+import type { components } from "@/global/backend/apiV1/schema";
+import client from "@/global/backend/client";
+import { createContext, useEffect, useState } from "react";
+
+type MemberDto = components["schemas"]["MemberDto"];
+
+export default function useAuth() {
+  const [loginMember, setLoginMember] = useState<MemberDto | null>(null);
+  const isLogin = loginMember !== null;
+
+  useEffect(() => {
+    client.GET("/api/v1/members/me").then((res) => {
+      if (res.error) return;
+      setLoginMember(res.data);
+    });
+  }, []);
+
+  const logout = (onSuccess: () => void) => {
+    client.DELETE("/api/v1/members/logout").then((res) => {
+      if (res.error) {
+        alert(`${res.error.resultCode} : ${res.error.msg}`);
+        return;
+      }
+      setLoginMember(null);
+      onSuccess();
+    });
+  };
+
+  if (isLogin)
+    return { loginMember, isLogin: true, logout, setLoginMember } as const;
+  return { loginMember: null, isLogin: false, logout, setLoginMember } as const;
+}
+
+export const AuthContext = createContext<ReturnType<typeof useAuth> | null>(
+  null,
+);

@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthContext } from "@/app/ClientLayout";
+import { AuthContext } from "@/global/auth/hooks/useAuth";
 import client from "@/global/backend/client";
 import { use } from "react";
 import { useRouter } from "next/navigation";
