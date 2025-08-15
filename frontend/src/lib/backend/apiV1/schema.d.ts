@@ -231,8 +231,8 @@ export interface components {
         };
         PostWriteResBody: {
             /** Format: int64 */
-            totalCount?: number;
-            post?: components["schemas"]["PostDto"];
+            totalCount: number;
+            post: components["schemas"]["PostDto"];
         };
         RsDataPostWriteResBody: {
             resultCode: string;

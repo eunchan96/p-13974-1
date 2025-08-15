@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { apiFetch } from "@/lib/backend/client";
+import client from "@/lib/backend/client";
 
 export default function Page() {
   const router = useRouter();
@@ -42,19 +42,20 @@ export default function Page() {
       return;
     }
 
-    apiFetch(`/api/v1/posts`, {
-      method: "POST",
-      body: JSON.stringify({
-        title: title.value,
-        content: content.value,
-      }),
-    })
-      .then((data) => {
-        alert(data.msg);
-        router.replace(`/posts/${data.data.post.id}`);
+    client
+      .POST("/api/v1/posts", {
+        body: {
+          title: title.value,
+          content: content.value,
+        },
       })
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+      .then((res) => {
+        if (res.error) {
+          alert(`${res.error.resultCode} : ${res.error.msg}`);
+          return;
+        }
+        alert(res.data.msg);
+        router.replace(`/posts/${res.data.data.post.id}`);
       });
   };
 

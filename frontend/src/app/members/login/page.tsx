@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { apiFetch } from "@/lib/backend/client";
+import client from "@/lib/backend/client";
 
 export default function Page() {
   const router = useRouter();
@@ -21,13 +21,13 @@ export default function Page() {
     usernameInput.value = usernameInput.value.trim();
 
     if (usernameInput.value.length === 0) {
-      alert("제목을 입력해주세요.");
+      alert("아이디를 입력해주세요.");
       usernameInput.focus();
       return;
     }
 
     if (usernameInput.value.length < 2) {
-      alert("제목을 2자 이상 입력해주세요.");
+      alert("아이디를 2자 이상 입력해주세요.");
       usernameInput.focus();
       return;
     }
@@ -35,30 +35,31 @@ export default function Page() {
     passwordInput.value = passwordInput.value.trim();
 
     if (passwordInput.value.length === 0) {
-      alert("내용을 입력해주세요.");
+      alert("비밀번호를 입력해주세요.");
       passwordInput.focus();
       return;
     }
 
     if (passwordInput.value.length < 2) {
-      alert("내용을 2자 이상 입력해주세요.");
+      alert("비밀번호를 2자 이상 입력해주세요.");
       passwordInput.focus();
       return;
     }
 
-    apiFetch(`/api/v1/members/login`, {
-      method: "POST",
-      body: JSON.stringify({
-        username: usernameInput.value,
-        password: passwordInput.value,
-      }),
-    })
-      .then((data) => {
-        alert(data.msg);
-        router.replace(`/`);
+    client
+      .POST("/api/v1/members/login", {
+        body: {
+          username: usernameInput.value,
+          password: passwordInput.value,
+        },
       })
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+      .then((res) => {
+        if (res.error) {
+          alert(`${res.error.resultCode} : ${res.error.msg}`);
+          return;
+        }
+        alert(res.data.msg);
+        router.replace("/");
       });
   };
 

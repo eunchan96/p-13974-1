@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { apiFetch } from "@/lib/backend/client";
+import client from "@/lib/backend/client";
 import type { components } from "@/lib/backend/apiV1/schema";
 
 type PostWithContentDto = components["schemas"]["PostWithContentDto"];
@@ -15,7 +15,21 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
 
   useEffect(() => {
-    apiFetch(`/api/v1/posts/${id}`).then(setPost);
+    client
+      .GET("/api/v1/posts/{id}", {
+        params: {
+          path: {
+            id,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(`${res.error.resultCode} : ${res.error.msg}`);
+          return;
+        }
+        setPost(res.data);
+      });
   }, [id]);
 
   if (post == null) {
@@ -58,19 +72,25 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       return;
     }
 
-    apiFetch(`/api/v1/posts/${id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        title: title.value,
-        content: content.value,
-      }),
-    })
-      .then((data) => {
-        alert(data.msg);
-        router.replace(`/posts/${id}`);
+    client
+      .PUT("/api/v1/posts/{id}", {
+        params: {
+          path: {
+            id,
+          },
+        },
+        body: {
+          title: title.value,
+          content: content.value,
+        },
       })
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+      .then((res) => {
+        if (res.error) {
+          alert(`${res.error.resultCode} : ${res.error.msg}`);
+          return;
+        }
+        alert(res.data.msg);
+        router.replace(`/posts/${id}`);
       });
   };
 
