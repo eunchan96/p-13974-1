@@ -41,3 +41,9 @@ export function useAuthContext() {
   if (authState == null) throw new Error("AuthContext is not found");
   return authState;
 }
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const authState = useAuth();
+
+  return <AuthContext value={authState}>{children}</AuthContext>;
+}
