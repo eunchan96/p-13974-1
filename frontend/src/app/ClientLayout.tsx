@@ -8,13 +8,7 @@ import { useRouter } from "next/navigation";
 
 type MemberDto = components["schemas"]["MemberDto"];
 
-export default function ClientLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const router = useRouter();
-
+function useAuth() {
   const [loginMember, setLoginMember] = useState<MemberDto | null>(null);
   const isLogin = loginMember !== null;
 
@@ -25,14 +19,29 @@ export default function ClientLayout({
     });
   }, []);
 
-  const logout = () => {
+  const logout = (onSuccess: () => void) => {
     client.DELETE("/api/v1/members/logout").then((res) => {
       if (res.error) {
         alert(`${res.error.resultCode} : ${res.error.msg}`);
         return;
       }
-      router.replace("/");
+      onSuccess();
     });
+  };
+
+  return { loginMember, isLogin, logout };
+}
+
+export default function ClientLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+  const { loginMember, isLogin, logout: _logout } = useAuth();
+
+  const logout = () => {
+    _logout(() => router.replace("/"));
   };
 
   return (
@@ -63,7 +72,7 @@ export default function ClientLayout({
           )}
           {isLogin && (
             <Link href="/members/me" className="p-2 rounded hover:bg-gray-100">
-              {loginMember.name}님의 정보
+              {loginMember?.name}님의 정보
             </Link>
           )}
         </nav>
