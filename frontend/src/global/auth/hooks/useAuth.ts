@@ -1,6 +1,6 @@
 import type { components } from "@/global/backend/apiV1/schema";
 import client from "@/global/backend/client";
-import { createContext, useEffect, useState } from "react";
+import { createContext, use, useEffect, useState } from "react";
 
 type MemberDto = components["schemas"]["MemberDto"];
 
@@ -34,3 +34,10 @@ export default function useAuth() {
 export const AuthContext = createContext<ReturnType<typeof useAuth> | null>(
   null,
 );
+
+export function useAuthContext() {
+  const authState = use(AuthContext);
+
+  if (authState == null) throw new Error("AuthContext is not found");
+  return authState;
+}

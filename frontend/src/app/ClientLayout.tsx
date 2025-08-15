@@ -1,7 +1,6 @@
 "use client";
 
-import { AuthContext } from "@/global/auth/hooks/useAuth";
-import { use } from "react";
+import { useAuthContext } from "@/global/auth/hooks/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -11,11 +10,7 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const {
-    loginMember = null,
-    isLogin = false,
-    logout: _logout = () => {},
-  } = use(AuthContext) ?? {};
+  const { loginMember, isLogin, logout: _logout } = useAuthContext();
 
   const logout = () => {
     _logout(() => router.replace("/"));
@@ -49,7 +44,7 @@ export default function ClientLayout({
           )}
           {isLogin && (
             <Link href="/members/me" className="p-2 rounded hover:bg-gray-100">
-              {loginMember?.name}님의 정보
+              {loginMember.name}님의 정보
             </Link>
           )}
         </nav>
