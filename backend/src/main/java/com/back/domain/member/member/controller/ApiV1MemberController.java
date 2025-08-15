@@ -101,6 +101,7 @@ public class ApiV1MemberController {
     @Operation(summary = "로그아웃")
     public RsData<Void> logout() {
         rq.deleteCookie("apiKey");
+        rq.deleteCookie("accessToken");
 
         return new RsData<>(
                 "200-1",
