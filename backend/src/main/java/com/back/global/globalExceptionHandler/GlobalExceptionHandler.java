@@ -12,6 +12,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Comparator;
@@ -68,10 +69,10 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(violation -> {
                     String field = violation.getPropertyPath().toString().split("\\.", 2)[1];
-                    String[] messsgeTemplateBits = violation.getMessageTemplate()
+                    String[] messageTemplateBits = violation.getMessageTemplate()
                             .replace(".message}", "")
                             .split("\\.");
-                    String code = messsgeTemplateBits[messsgeTemplateBits.length - 1];
+                    String code = messageTemplateBits[messageTemplateBits.length - 1];
                     String _message = violation.getMessage();
                     return field + "-" + code + "-" + _message;
                 })
@@ -87,11 +88,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ServiceException.class)
-    public RsData<Void> handle(ServiceException ex, HttpServletResponse reponse) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<RsData<Void>> handle(ServiceException ex, HttpServletResponse response) {
         RsData<Void> rsData = ex.getRsData();
-        reponse.setStatus(rsData.statusCode());
 
-        return rsData;
+        return new ResponseEntity<>(
+                rsData,
+                ResponseEntity
+                        .status(rsData.statusCode())
+                        .build()
+                        .getStatusCode()
+        );
     }
 
     @ExceptionHandler(MissingRequestHeaderException.class)
