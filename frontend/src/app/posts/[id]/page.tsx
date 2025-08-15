@@ -3,7 +3,7 @@
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { apiFetch } from "@/lib/backend/client";
+import client from "@/lib/backend/client";
 import type { components } from "@/lib/backend/apiV1/schema";
 
 type PostWithContentDto = components["schemas"]["PostWithContentDto"];
@@ -15,20 +15,38 @@ function usePost(id: number) {
   const [post, setPost] = useState<PostWithContentDto | null>(null);
 
   useEffect(() => {
-    apiFetch(`/api/v1/posts/${id}`)
-      .then(setPost)
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+    client
+      .GET("/api/v1/posts/{id}", {
+        params: {
+          path: {
+            id,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(`${res.error.resultCode} : ${res.error.msg}`);
+          return;
+        }
+        setPost(res.data);
       });
   }, [id]);
 
   const deletePost = (onSuccess: () => void) => {
-    apiFetch(`/api/v1/posts/${id}`, {
-      method: "DELETE",
-    })
-      .then(onSuccess)
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+    client
+      .DELETE("/api/v1/posts/{id}", {
+        params: {
+          path: {
+            id,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(`${res.error.resultCode} : ${res.error.msg}`);
+          return;
+        }
+        onSuccess();
       });
   };
 
@@ -41,10 +59,20 @@ function usePostComments(postId: number) {
   );
 
   useEffect(() => {
-    apiFetch(`/api/v1/posts/${postId}/comments`)
-      .then(setPostComments)
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+    client
+      .GET("/api/v1/posts/{postId}/comments", {
+        params: {
+          path: {
+            postId,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(`${res.error.resultCode} : ${res.error.msg}`);
+          return;
+        }
+        setPostComments(res.data);
       });
   }, [postId]);
 
@@ -52,19 +80,25 @@ function usePostComments(postId: number) {
     commentId: number,
     onSuccess: (data: RsDataPostCommentDto) => void,
   ) => {
-    apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
-      method: "DELETE",
-    })
-      .then((data) => {
+    client
+      .DELETE("/api/v1/posts/{postId}/comments/{id}", {
+        params: {
+          path: {
+            id: commentId,
+            postId,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(`${res.error.resultCode} : ${res.error.msg}`);
+          return;
+        }
         if (postComments == null) return;
         setPostComments(
           postComments.filter((comment) => comment.id !== commentId),
         );
-
-        onSuccess(data);
-      })
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+        onSuccess(res.data);
       });
   };
 
@@ -72,18 +106,26 @@ function usePostComments(postId: number) {
     content: string,
     onSuccess: (data: RsDataPostCommentDto) => void,
   ) => {
-    apiFetch(`/api/v1/posts/${postId}/comments`, {
-      method: "POST",
-      body: JSON.stringify({ content }),
-    })
-      .then((data) => {
-        if (postComments == null) return;
-        setPostComments([...postComments, data.data]);
-
-        onSuccess(data);
+    client
+      .POST("/api/v1/posts/{postId}/comments", {
+        params: {
+          path: {
+            postId,
+          },
+        },
+        body: {
+          content,
+        },
       })
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+      .then((res) => {
+        if (res.error) {
+          alert(`${res.error.resultCode} : ${res.error.msg}`);
+          return;
+        }
+        if (postComments == null) return;
+        setPostComments([...postComments, res.data.data]);
+
+        onSuccess(res.data);
       });
   };
 
@@ -92,11 +134,23 @@ function usePostComments(postId: number) {
     content: string,
     onSuccess: (data: RsDataVoid) => void,
   ) => {
-    apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
-      method: "PUT",
-      body: JSON.stringify({ content }),
-    })
-      .then((data) => {
+    client
+      .PUT("/api/v1/posts/{postId}/comments/{id}", {
+        params: {
+          path: {
+            id: commentId,
+            postId,
+          },
+        },
+        body: {
+          content,
+        },
+      })
+      .then((res) => {
+        if (res.error) {
+          alert(`${res.error.resultCode} : ${res.error.msg}`);
+          return;
+        }
         if (postComments == null) return;
         setPostComments(
           postComments.map((comment) =>
@@ -104,10 +158,7 @@ function usePostComments(postId: number) {
           ),
         );
 
-        onSuccess(data);
-      })
-      .catch((error) => {
-        alert(`${error.resultCode} : ${error.msg}`);
+        onSuccess(res.data);
       });
   };
 
