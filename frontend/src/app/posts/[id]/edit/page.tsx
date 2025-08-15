@@ -1,36 +1,16 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use } from "react";
 import { useRouter } from "next/navigation";
-import client from "@/lib/backend/client";
-import type { components } from "@/lib/backend/apiV1/schema";
-
-type PostWithContentDto = components["schemas"]["PostWithContentDto"];
+import usePost from "../_hooks/usePost";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id: idStr } = use(params);
   const id = parseInt(idStr);
 
-  const [post, setPost] = useState<PostWithContentDto | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    client
-      .GET("/api/v1/posts/{id}", {
-        params: {
-          path: {
-            id,
-          },
-        },
-      })
-      .then((res) => {
-        if (res.error) {
-          alert(`${res.error.resultCode} : ${res.error.msg}`);
-          return;
-        }
-        setPost(res.data);
-      });
-  }, [id]);
+  const { post, modifyPost } = usePost(id);
 
   if (post == null) {
     return <div>로딩중...</div>;
@@ -72,26 +52,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       return;
     }
 
-    client
-      .PUT("/api/v1/posts/{id}", {
-        params: {
-          path: {
-            id,
-          },
-        },
-        body: {
-          title: title.value,
-          content: content.value,
-        },
-      })
-      .then((res) => {
-        if (res.error) {
-          alert(`${res.error.resultCode} : ${res.error.msg}`);
-          return;
-        }
-        alert(res.data.msg);
-        router.replace(`/posts/${id}`);
-      });
+    modifyPost(title.value, content.value, (data) => {
+      alert(data.msg);
+      router.replace(`/posts/${id}`);
+    });
   };
 
   return (
