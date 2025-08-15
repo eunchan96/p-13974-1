@@ -8,6 +8,8 @@ import type { components } from "@/lib/backend/apiV1/schema";
 
 type PostWithContentDto = components["schemas"]["PostWithContentDto"];
 type PostCommentDto = components["schemas"]["PostCommentDto"];
+type RsDataPostCommentDto = components["schemas"]["RsDataPostCommentDto"];
+type RsDataVoid = components["schemas"]["RsDataVoid"];
 
 function usePost(id: number) {
   const [post, setPost] = useState<PostWithContentDto | null>(null);
@@ -18,7 +20,7 @@ function usePost(id: number) {
       .catch((error) => {
         alert(`${error.resultCode} : ${error.msg}`);
       });
-  }, []);
+  }, [id]);
 
   const deletePost = (onSuccess: () => void) => {
     apiFetch(`/api/v1/posts/${id}`, {
@@ -44,9 +46,12 @@ function usePostComments(postId: number) {
       .catch((error) => {
         alert(`${error.resultCode} : ${error.msg}`);
       });
-  }, []);
+  }, [postId]);
 
-  const deleteComment = (commentId: number, onSuccess: (data: any) => void) => {
+  const deleteComment = (
+    commentId: number,
+    onSuccess: (data: RsDataPostCommentDto) => void,
+  ) => {
     apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
       method: "DELETE",
     })
@@ -63,7 +68,10 @@ function usePostComments(postId: number) {
       });
   };
 
-  const writeComment = (content: string, onSuccess: (data: any) => void) => {
+  const writeComment = (
+    content: string,
+    onSuccess: (data: RsDataPostCommentDto) => void,
+  ) => {
     apiFetch(`/api/v1/posts/${postId}/comments`, {
       method: "POST",
       body: JSON.stringify({ content }),
@@ -82,7 +90,7 @@ function usePostComments(postId: number) {
   const editComment = (
     commentId: number,
     content: string,
-    onSuccess: (data: any) => void,
+    onSuccess: (data: RsDataVoid) => void,
   ) => {
     apiFetch(`/api/v1/posts/${postId}/comments/${commentId}`, {
       method: "PUT",
