@@ -29,7 +29,8 @@ function useAuth() {
     });
   };
 
-  return { loginMember, isLogin, logout };
+  if (isLogin) return { loginMember, isLogin: true, logout } as const;
+  return { loginMember: null, isLogin: false, logout } as const;
 }
 
 export default function ClientLayout({
@@ -72,7 +73,7 @@ export default function ClientLayout({
           )}
           {isLogin && (
             <Link href="/members/me" className="p-2 rounded hover:bg-gray-100">
-              {loginMember?.name}님의 정보
+              {loginMember.name}님의 정보
             </Link>
           )}
         </nav>
