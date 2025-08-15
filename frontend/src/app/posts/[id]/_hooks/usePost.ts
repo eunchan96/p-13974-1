@@ -1,6 +1,6 @@
+import type { components } from "@/global/backend/apiV1/schema";
+import client from "@/global/backend/client";
 import { useEffect, useState } from "react";
-import client from "@/lib/backend/client";
-import type { components } from "@/lib/backend/apiV1/schema";
 
 type PostWithContentDto = components["schemas"]["PostWithContentDto"];
 type RsDataVoid = components["schemas"]["RsDataVoid"];
