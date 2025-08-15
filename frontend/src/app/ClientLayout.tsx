@@ -2,11 +2,15 @@
 
 import type { components } from "@/global/backend/apiV1/schema";
 import client from "@/global/backend/client";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 type MemberDto = components["schemas"]["MemberDto"];
+
+export const AuthContext = createContext<ReturnType<typeof useAuth> | null>(
+  null,
+);
 
 function useAuth() {
   const [loginMember, setLoginMember] = useState<MemberDto | null>(null);
@@ -25,12 +29,14 @@ function useAuth() {
         alert(`${res.error.resultCode} : ${res.error.msg}`);
         return;
       }
+      setLoginMember(null);
       onSuccess();
     });
   };
 
-  if (isLogin) return { loginMember, isLogin: true, logout } as const;
-  return { loginMember: null, isLogin: false, logout } as const;
+  if (isLogin)
+    return { loginMember, isLogin: true, logout, setLoginMember } as const;
+  return { loginMember: null, isLogin: false, logout, setLoginMember } as const;
 }
 
 export default function ClientLayout({
@@ -39,14 +45,15 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { loginMember, isLogin, logout: _logout } = useAuth();
+  const authState = useAuth();
+  const { loginMember, isLogin, logout: _logout } = authState;
 
   const logout = () => {
     _logout(() => router.replace("/"));
   };
 
   return (
-    <>
+    <AuthContext value={authState}>
       <header>
         <nav className="flex gap-4">
           <Link href="/" className="p-2 rounded hover:bg-gray-100">
@@ -80,6 +87,6 @@ export default function ClientLayout({
       </header>
       <main className="flex-1 flex flex-col">{children}</main>
       <footer className="text-center p-2">푸터</footer>
-    </>
+    </AuthContext>
   );
 }
