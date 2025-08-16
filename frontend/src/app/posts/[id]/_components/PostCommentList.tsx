@@ -1,0 +1,33 @@
+"use client";
+
+import usePostComments from "../_hooks/usePostComments";
+import PostCommentListItem from "./PostCommentListItem";
+
+export default function PostCommentList({
+  postCommentsState,
+}: {
+  postCommentsState: ReturnType<typeof usePostComments>;
+}) {
+  const { postComments } = postCommentsState;
+
+  return (
+    <>
+      <h2>댓글 목록</h2>
+      {postComments == null && <div>댓글 로딩중...</div>}
+      {postComments != null && postComments.length === 0 && (
+        <div>댓글이 없습니다.</div>
+      )}
+      {postComments != null && postComments.length > 0 && (
+        <ul className="mt-2 flex flex-col gap-2">
+          {postComments.map((comment) => (
+            <PostCommentListItem
+              key={comment.id}
+              comment={comment}
+              postCommentsState={postCommentsState}
+            />
+          ))}
+        </ul>
+      )}
+    </>
+  );
+}
