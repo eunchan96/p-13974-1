@@ -5,7 +5,9 @@ import { createContext, use, useEffect, useState } from "react";
 type MemberDto = components["schemas"]["MemberDto"];
 
 export default function useAuth() {
-  const [loginMember, setLoginMember] = useState<MemberDto | null>(null);
+  const [loginMember, setLoginMember] = useState<MemberDto>(
+    null as unknown as MemberDto,
+  );
   const isLogin = loginMember !== null;
   const isAdmin = isLogin && loginMember.isAdmin;
 
@@ -22,23 +24,22 @@ export default function useAuth() {
         alert(`${res.error.resultCode} : ${res.error.msg}`);
         return;
       }
-      setLoginMember(null);
+      setLoginMember(null as unknown as MemberDto);
       onSuccess();
     });
   };
 
-  const baseRs = {
+  return {
+    isLogin,
+    isAdmin,
+    loginMember,
     logout,
     setLoginMember,
-    isAdmin,
   };
-
-  if (isLogin) return { loginMember, isLogin: true, ...baseRs } as const;
-  return { loginMember: null, isLogin: false, ...baseRs } as const;
 }
 
-export const AuthContext = createContext<ReturnType<typeof useAuth> | null>(
-  null,
+export const AuthContext = createContext<ReturnType<typeof useAuth>>(
+  null as unknown as ReturnType<typeof useAuth>,
 );
 
 export function useAuthContext() {
