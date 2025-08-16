@@ -1,11 +1,10 @@
 "use client";
 
+import withLogin from "@/global/auth/hoc/withLogin";
 import { useAuthContext } from "@/global/auth/hooks/useAuth";
 
-export default function Page() {
-  const { isLogin, loginMember } = useAuthContext();
-
-  if (!isLogin) return <div>로그인 후 이용해주세요.</div>;
+export default withLogin(function Page() {
+  const { loginMember } = useAuthContext();
 
   return (
     <>
@@ -17,4 +16,4 @@ export default function Page() {
       <div>이름 : {loginMember.name}</div>
     </>
   );
-}
+});

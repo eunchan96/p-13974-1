@@ -1,14 +1,13 @@
 "use client";
 
+import withLogout from "@/global/auth/hoc/withLogout";
 import { useAuthContext } from "@/global/auth/hooks/useAuth";
 import client from "@/global/backend/client";
 import { useRouter } from "next/navigation";
 
-export default function Page() {
+export default withLogout(function Page() {
   const router = useRouter();
-  const { isLogin, setLoginMember } = useAuthContext();
-
-  if (isLogin) return <div>이미 로그인 상태입니다.</div>;
+  const { setLoginMember } = useAuthContext();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -94,4 +93,4 @@ export default function Page() {
       </form>
     </>
   );
-}
+});
