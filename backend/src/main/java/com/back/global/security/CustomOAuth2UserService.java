@@ -19,7 +19,7 @@ import java.util.Map;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final MemberService memberService;
 
-    // 카카오톡 로그인이 성공할 때 마다 이 함수가 실행된다.
+    // OAuth2 로그인이 성공할 때 마다 이 함수가 실행된다.
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -28,16 +28,27 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String oauthUserId = oAuth2User.getName();
         String providerTypeCode = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
 
-        Map<String, Object> attributes = oAuth2User.getAttributes();
-        Map<String, Object> attributesProperties = (Map<String, Object>) attributes.get("properties");
+        String nickname = "";
+        String profileImgUrl = "";
+        String username = "";
 
-        String userNicknameAttributeName = "nickname";
-        String profileImgUrlAttributeName = "profile_image";
+        switch (providerTypeCode) {
+            case "KAKAO":
+                Map<String, Object> attributes = oAuth2User.getAttributes();
+                Map attributesProperties = (Map) attributes.get("properties");
 
-        String nickname = (String) attributesProperties.get(userNicknameAttributeName);
-        String profileImgUrl = (String) attributesProperties.get(profileImgUrlAttributeName);
-        String username = providerTypeCode + "__%s".formatted(oauthUserId);
+                nickname = (String) attributesProperties.get("nickname");
+                profileImgUrl = (String) attributesProperties.get("profile_image");
+                break;
+            case "GOOGLE":
+                nickname = (String) oAuth2User.getAttributes().get("name");
+                profileImgUrl = (String) oAuth2User.getAttributes().get("picture");
+                break;
+        }
+
+        username = providerTypeCode + "__%s".formatted(oauthUserId);
         String password = "";
+
         Member member = memberService.modifyOrJoin(username, password, nickname, profileImgUrl).data();
 
         return new SecurityUser(member.getId(), member.getUsername(), member.getPassword(), member.getName(), member.getAuthorities());
