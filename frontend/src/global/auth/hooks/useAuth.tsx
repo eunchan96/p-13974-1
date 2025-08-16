@@ -7,6 +7,7 @@ type MemberDto = components["schemas"]["MemberDto"];
 export default function useAuth() {
   const [loginMember, setLoginMember] = useState<MemberDto | null>(null);
   const isLogin = loginMember !== null;
+  const isAdmin = isLogin && loginMember.isAdmin;
 
   useEffect(() => {
     client.GET("/api/v1/members/me").then((res) => {
@@ -26,9 +27,14 @@ export default function useAuth() {
     });
   };
 
-  if (isLogin)
-    return { loginMember, isLogin: true, logout, setLoginMember } as const;
-  return { loginMember: null, isLogin: false, logout, setLoginMember } as const;
+  const baseRs = {
+    logout,
+    setLoginMember,
+    isAdmin,
+  };
+
+  if (isLogin) return { loginMember, isLogin: true, ...baseRs } as const;
+  return { loginMember: null, isLogin: false, ...baseRs } as const;
 }
 
 export const AuthContext = createContext<ReturnType<typeof useAuth> | null>(
