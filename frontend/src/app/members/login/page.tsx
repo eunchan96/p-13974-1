@@ -6,7 +6,9 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
   const router = useRouter();
-  const { setLoginMember } = useAuthContext();
+  const { isLogin, setLoginMember } = useAuthContext();
+
+  if (isLogin) return <div>이미 로그인 상태입니다.</div>;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
