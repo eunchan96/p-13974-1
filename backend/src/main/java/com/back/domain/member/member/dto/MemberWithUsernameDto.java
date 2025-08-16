@@ -10,14 +10,16 @@ public record MemberWithUsernameDto(
         @NonNull LocalDateTime createDate,
         @NonNull LocalDateTime modifyDate,
         @NonNull String name,
-        @NonNull String username
+        @NonNull String username,
+        @NonNull boolean isAdmin
 ) {
-    public MemberWithUsernameDto(int id, LocalDateTime createDate, LocalDateTime modifyDate, String name, String username) {
+    public MemberWithUsernameDto(int id, LocalDateTime createDate, LocalDateTime modifyDate, String name, String username, boolean isAdmin) {
         this.id = id;
         this.createDate = createDate;
         this.modifyDate = modifyDate;
         this.name = name;
         this.username = username;
+        this.isAdmin = isAdmin;
     }
 
     public MemberWithUsernameDto(Member member) {
@@ -26,7 +28,8 @@ public record MemberWithUsernameDto(
                 member.getCreateDate(),
                 member.getModifyDate(),
                 member.getName(),
-                member.getUsername()
+                member.getUsername(),
+                member.isAdmin()
         );
     }
 }
