@@ -1,5 +1,6 @@
 package com.back.global.security;
 
+import com.back.global.rq.Rq;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,8 +14,10 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+    private final Rq rq;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        response.sendRedirect("http://localhost:3000");
+        rq.sendRedirect("http://localhost:3000");
     }
 }
