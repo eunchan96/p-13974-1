@@ -16,7 +16,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Member  extends BaseEntity {
+public class Member extends BaseEntity {
     @Column(unique = true)
     private String username;
     private String password;
@@ -48,8 +48,8 @@ public class Member  extends BaseEntity {
     }
 
     public boolean isAdmin() {
-        if(username.equals("admin")) return true;
-        if(username.equals("system")) return true;
+        if (username.equals("admin")) return true;
+        if (username.equals("system")) return true;
         return false;
     }
 

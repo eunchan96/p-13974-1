@@ -39,7 +39,10 @@ public class ApiV1MemberController {
             @NotBlank(message = "닉네임은 필수 입력입니다.")
             @Size(min = 2, max = 30, message = "닉네임은 2자 이상 30자 이하로 입력해주세요.")
             String nickname
-    ){};
+    ) {
+    }
+
+    ;
 
     @PostMapping
     @Operation(summary = "회원 가입")
@@ -63,13 +66,19 @@ public class ApiV1MemberController {
             @NotBlank(message = "비밀번호는 필수 입력입니다.")
             @Size(min = 2, max = 30, message = "비밀번호는 2자 이상 30자 이하로 입력해주세요.")
             String password
-    ){};
+    ) {
+    }
+
+    ;
 
     record MemberLoginResBody(
             @NonNull MemberDto item,
             @NonNull String apiKey,
             @NonNull String accessToken
-    ){};
+    ) {
+    }
+
+    ;
 
     @PostMapping("/login")
     @Operation(summary = "로그인")

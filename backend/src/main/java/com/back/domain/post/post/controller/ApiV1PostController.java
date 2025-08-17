@@ -76,12 +76,14 @@ public class ApiV1PostController {
             @NotBlank
             @Size(min = 2, max = 5000)
             String content
-    ) {}
+    ) {
+    }
 
     record PostWriteResBody(
             @NonNull long totalCount,
             @NonNull PostDto post
-    ){}
+    ) {
+    }
 
     @PostMapping
     @Transactional
@@ -111,7 +113,8 @@ public class ApiV1PostController {
             @NotBlank
             @Size(min = 2, max = 5000)
             String content
-    ) {}
+    ) {
+    }
 
     @PutMapping("/{id}")
     @Transactional

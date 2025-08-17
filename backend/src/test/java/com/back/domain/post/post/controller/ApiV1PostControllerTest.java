@@ -164,7 +164,7 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.length()").value(posts.size()));
 
 
-        for(int i = 0; i < posts.size(); i++) {
+        for (int i = 0; i < posts.size(); i++) {
             Post post = posts.get(i);
             resultActions
                     .andExpect(jsonPath("$[%d].id".formatted(i)).value(post.getId()))
@@ -385,7 +385,8 @@ public class ApiV1PostControllerTest {
     }
 
     @Test
-    @DisplayName("글 쓰기, with wrong apiKey, with valid accessToken") // Authorization 헤더로 테스트
+    @DisplayName("글 쓰기, with wrong apiKey, with valid accessToken")
+        // Authorization 헤더로 테스트
     void t15() throws Exception {
         Member actor = memberService.findByUsername("user1").get();
         String actorAccessToken = memberService.genAccessToken(actor);
@@ -411,7 +412,8 @@ public class ApiV1PostControllerTest {
     }
 
     @Test
-    @DisplayName("글 쓰기, with wrong apiKey cookie, with valid accessToken cookie") // cookie로 테스트
+    @DisplayName("글 쓰기, with wrong apiKey cookie, with valid accessToken cookie")
+        // cookie로 테스트
     void t16() throws Exception {
         Member actor = memberService.findByUsername("user1").get();
         String actorAccessToken = memberService.genAccessToken(actor);

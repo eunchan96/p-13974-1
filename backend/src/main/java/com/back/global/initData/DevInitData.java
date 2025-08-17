@@ -21,7 +21,8 @@ public class DevInitData {
                     "--package", "openapi-typescript",  // openapi-typescript 패키지
                     "openapi-typescript",               // 실제 실행할 명령어
                     "http://localhost:8080/v3/api-docs/apiV1", // OpenAPI 문서 URL
-                    "-o", "../frontend/src/global/backend/apiV1/schema.d.ts" // 출력 파일 경로
+                    "-o", "../frontend/src/global/backend/apiV1/schema.d.ts", // 출력 파일 경로
+                    "--properties-required-by-default"
             );
         };
     }

@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
 @RestController
-@Tag(name="HomeController", description = "홈 컨트롤러")
+@Tag(name = "HomeController", description = "홈 컨트롤러")
 public class HomeController {
     @SneakyThrows
     @GetMapping(produces = TEXT_HTML_VALUE)
     @Operation(summary = "메인 페이지")
-    public String main(){
+    public String main() {
         InetAddress localHost = InetAddress.getLocalHost();
 
         return """

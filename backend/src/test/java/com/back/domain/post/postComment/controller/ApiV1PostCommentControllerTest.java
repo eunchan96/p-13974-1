@@ -82,13 +82,13 @@ public class ApiV1PostCommentControllerTest {
         for (int i = 0; i < post.getComments().size(); i++) {
             PostComment postComment = post.getComments().get(i);
             resultActions
-                .andExpect(jsonPath("$[%d].id".formatted(i)).value(postComment.getId()))
-                .andExpect(jsonPath("$[%d].createDate".formatted(i)).value(Matchers.startsWith(postComment.getCreateDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$[%d].modifyDate".formatted(i)).value(Matchers.startsWith(postComment.getModifyDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$[%d].authorId".formatted(i)).value(postComment.getAuthor().getId()))
-                .andExpect(jsonPath("$[%d].authorName".formatted(i)).value(postComment.getAuthor().getName()))
-                .andExpect(jsonPath("$[%d].postId".formatted(i)).value(postComment.getPost().getId()))
-                .andExpect(jsonPath("$[%d].content".formatted(i)).value(postComment.getContent()));
+                    .andExpect(jsonPath("$[%d].id".formatted(i)).value(postComment.getId()))
+                    .andExpect(jsonPath("$[%d].createDate".formatted(i)).value(Matchers.startsWith(postComment.getCreateDate().toString().substring(0, 20))))
+                    .andExpect(jsonPath("$[%d].modifyDate".formatted(i)).value(Matchers.startsWith(postComment.getModifyDate().toString().substring(0, 20))))
+                    .andExpect(jsonPath("$[%d].authorId".formatted(i)).value(postComment.getAuthor().getId()))
+                    .andExpect(jsonPath("$[%d].authorName".formatted(i)).value(postComment.getAuthor().getName()))
+                    .andExpect(jsonPath("$[%d].postId".formatted(i)).value(postComment.getPost().getId()))
+                    .andExpect(jsonPath("$[%d].content".formatted(i)).value(postComment.getContent()));
         }
     }
 

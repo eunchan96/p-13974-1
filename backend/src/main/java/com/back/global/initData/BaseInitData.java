@@ -41,7 +41,7 @@ public class BaseInitData {
         Member memberUser2 = memberService.join("user2", "1234", "유저2");
         Member memberUser3 = memberService.join("user3", "1234", "유저3");
 
-        if(AppConfig.isNotProd()){
+        if (AppConfig.isNotProd()) {
             memberSystem.modifyApiKey(memberSystem.getUsername());
             memberAdmin.modifyApiKey(memberAdmin.getUsername());
             memberUser1.modifyApiKey(memberUser1.getUsername());
@@ -51,7 +51,7 @@ public class BaseInitData {
     }
 
     @Transactional
-    public void work2(){
+    public void work2() {
         if (postService.count() > 0) return;
 
         Member memberUser1 = memberService.findByUsername("user1").get();
@@ -70,5 +70,6 @@ public class BaseInitData {
     }
 
     @Transactional
-    public void work3(){}
+    public void work3() {
+    }
 }

@@ -25,7 +25,8 @@ public class ApiV1AdmPostController {
 
     record AdmPostCountResBody(
             @NonNull Long all
-    ) {}
+    ) {
+    }
 
     @GetMapping("/count")
     @Transactional(readOnly = true)

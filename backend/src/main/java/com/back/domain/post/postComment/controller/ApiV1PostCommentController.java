@@ -75,7 +75,8 @@ public class ApiV1PostCommentController {
             @NotBlank
             @Size(min = 2, max = 5000)
             String content
-    ) {}
+    ) {
+    }
 
     @PostMapping
     @Transactional
@@ -103,7 +104,8 @@ public class ApiV1PostCommentController {
             @NotBlank
             @Size(min = 2, max = 5000)
             String content
-    ) {}
+    ) {
+    }
 
     @PutMapping("/{id}")
     @Transactional
