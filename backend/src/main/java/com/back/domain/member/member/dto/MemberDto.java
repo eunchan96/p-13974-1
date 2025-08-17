@@ -1,34 +1,25 @@
 package com.back.domain.member.member.dto;
 
 import com.back.domain.member.member.entity.Member;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-public record MemberDto(
-        int id,
-        LocalDateTime createDate,
-        LocalDateTime modifyDate,
-        String name,
-        boolean isAdmin,
-        String profileImgUrl
-) {
-    public MemberDto(int id, LocalDateTime createDate, LocalDateTime modifyDate, String name, boolean isAdmin, String profileImgUrl) {
-        this.id = id;
-        this.createDate = createDate;
-        this.modifyDate = modifyDate;
-        this.name = name;
-        this.isAdmin = isAdmin;
-        this.profileImgUrl = profileImgUrl;
-    }
+@Getter
+public class MemberDto {
+    private final int id;
+    private final LocalDateTime createDate;
+    private final LocalDateTime modifyDate;
+    private final String name;
+    private final boolean isAdmin;
+    private final String profileImgUrl;
 
     public MemberDto(Member member) {
-        this(
-                member.getId(),
-                member.getCreateDate(),
-                member.getModifyDate(),
-                member.getName(),
-                member.isAdmin(),
-                member.getProfileImgUrlOrDefault()
-        );
+        id = member.getId();
+        createDate = member.getCreateDate();
+        modifyDate = member.getModifyDate();
+        name = member.getName();
+        isAdmin = member.isAdmin();
+        profileImgUrl = member.getProfileImgUrlOrDefault();
     }
 }
