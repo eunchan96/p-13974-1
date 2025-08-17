@@ -1,6 +1,7 @@
 package com.back.domain.member.member.dto;
 
 import com.back.domain.member.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -11,7 +12,8 @@ public class MemberDto {
     private final LocalDateTime createDate;
     private final LocalDateTime modifyDate;
     private final String name;
-    private final boolean isAdmin;
+    @JsonProperty("isAdmin")
+    private final boolean admin;
     private final String profileImgUrl;
 
     public MemberDto(Member member) {
@@ -19,7 +21,7 @@ public class MemberDto {
         createDate = member.getCreateDate();
         modifyDate = member.getModifyDate();
         name = member.getName();
-        isAdmin = member.isAdmin();
+        admin = member.isAdmin();
         profileImgUrl = member.getProfileImgUrlOrDefault();
     }
 }
