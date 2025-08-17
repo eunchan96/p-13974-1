@@ -275,6 +275,7 @@ export interface components {
             modifyDate: string;
             name: string;
             isAdmin: boolean;
+            profileImgUrl: string;
         };
         RsDataMemberDto: {
             resultCode: string;
@@ -318,6 +319,7 @@ export interface components {
             name: string;
             username: string;
             isAdmin: boolean;
+            profileImgUrl: string;
         };
         AdmPostCountResBody: {
             /** Format: int64 */
